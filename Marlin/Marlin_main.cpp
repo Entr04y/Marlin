@@ -1849,7 +1849,15 @@ static void homeaxis(AxisEnum axis) {
       if (axis == Z_AXIS) {
         if (axis_home_dir < 0) deploy_z_probe();
       }
+    //JMO Edit
+    #elif !SERVO_LEVELING && HAS_SERVO_ENDSTOPS && DISABLED(Z_PROBE_SLED)
+      if (axis == Z_AXIS && servo_endstop_id[axis] >= 0) {
+        if (axis_home_dir < 0) {
+          servo[servo_endstop_id[axis]].move(servo_endstop_angle[axis][0]);
+        }
 
+      }
+    //JMO Edit end
     #endif
 
     #if HAS_SERVO_ENDSTOPS
