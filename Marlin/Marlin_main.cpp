@@ -1844,20 +1844,22 @@ static void homeaxis(AxisEnum axis) {
     #endif
 
     #if SERVO_LEVELING && DISABLED(Z_PROBE_SLED)
-
-      // Deploy a Z probe if there is one, and homing towards the bed
+      // Z servo probing with autolevling
+      // Deploy a Z probe if there is one, and homing towards the bed using the auto level routines
       if (axis == Z_AXIS) {
         if (axis_home_dir < 0) deploy_z_probe();
       }
-    //JMO Edit
+    
+
     #elif !SERVO_LEVELING && HAS_SERVO_ENDSTOPS && DISABLED(Z_PROBE_SLED)
+      // Z servo probing without autoleveling
+      // Deploy Zprobe if there is one, and homing toward the bed using the standard routines.
       if (axis == Z_AXIS && servo_endstop_id[axis] >= 0) {
         if (axis_home_dir < 0) {
           servo[servo_endstop_id[axis]].move(servo_endstop_angle[axis][0]);
         }
 
       }
-    //JMO Edit end
     #endif
 
     #if HAS_SERVO_ENDSTOPS
